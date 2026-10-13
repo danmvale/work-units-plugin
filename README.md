@@ -98,7 +98,7 @@ All progress lives in `task.md`. If a session is interrupted, run `/work-units:t
 | Path | Purpose |
 | --- | --- |
 | `specs/` | The project specification, maintained by `specification-strengthener`. |
-| `dev/` | The implementation. |
+| `src/` | The implementation. |
 | `task.md` | The active task: description, a status line per unit, and each unit's dependencies, description, report and notes for later agents. |
 | `task-history/` | Completed tasks, named `{id:000}-{task-name}-{mm-dd-yyyy}`. |
 | `DATABASE-ISOLATION-STRATEGIES.md` | Isolation strategy per database, reused by later worktrees. |
@@ -133,7 +133,7 @@ None
 
 ## Before you use it
 
-- **It's opinionated about layout.** It expects (and will create) `specs/` for the specification and `dev/` for the code.
+- **It's opinionated about layout.** It expects (and will create) `specs/` for the specification and `src/` for the code.
 - **It merges into `main`.** The Git work unit and the final archive step both commit to `main`. Try it on a branch or a throwaway repo first.
 - **It uses a lot of tokens.** Every work unit, worktree and new database isolation strategy gets its own review agent, and units run in parallel. A small request still goes through the full pipeline.
 - **It holds everything to production standards.** Agents are told to treat the project as production code, so even small changes get security and verification passes unless the splitter decides they aren't needed.
