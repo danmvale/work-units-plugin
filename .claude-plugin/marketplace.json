@@ -1,0 +1,14 @@
+{
+    "name": "work-units",
+    "owner": {
+        "name": "Daniel Mendes"
+    },
+    "description": "Claude Code plugin that breaks a task into work units and handles them end to end.",
+    "plugins": [
+        {
+            "name": "work-units",
+            "source": "./",
+            "description": "Breaks a task into work units and handles them end to end: specifies, implements, tests, commits, merges, and takes any other action needed to achieve the goal."
+        }
+    ]
+}

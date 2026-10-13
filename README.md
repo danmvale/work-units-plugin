@@ -54,12 +54,32 @@ The splitter decides the units for each task, but three come up often:
 
 ## Installation
 
-Clone the repository and start Claude Code with the plugin loaded:
+Install once from inside Claude Code:
+
+```
+/plugin install work-units --marketplace danmvale/work-units-plugin
+```
+
+Or from your terminal:
 
 ```bash
-git clone https://github.com/<owner>/work-units.git
-cd /path/to/your/project
-claude --plugin-dir /path/to/work-units
+claude plugin install work-units --marketplace danmvale/work-units-plugin
+```
+
+This adds the repository as a plugin marketplace and installs the plugin for your user, so `/work-units:task` is available in every project from then on. Add `--scope project` to the terminal command to install it only for the current project and share it with your team through `.claude/settings.json`.
+
+On Claude Code versions before 2.1.275, which can't do this in one step, add the marketplace first:
+
+```
+/plugin marketplace add danmvale/work-units-plugin
+/plugin install work-units@work-units
+```
+
+To get the latest version later:
+
+```bash
+claude plugin marketplace update work-units
+claude plugin update work-units@work-units
 ```
 
 ## Usage
@@ -141,7 +161,8 @@ None
 ## Project structure
 
 ```
-.claude-plugin/plugin.json   Plugin manifest
-skills/task/SKILL.md         The /work-units:task orchestrator
-agents/                      Subagent definitions
+.claude-plugin/plugin.json        Plugin manifest
+.claude-plugin/marketplace.json   Marketplace manifest (makes the repo installable)
+skills/task/SKILL.md              The /work-units:task orchestrator
+agents/                           Subagent definitions
 ```
