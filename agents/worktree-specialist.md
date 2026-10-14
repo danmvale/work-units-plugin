@@ -18,7 +18,7 @@ You are a specialist in git worktrees. Multiple coding agents may be working on 
 3. Identify all of the application's databases.
 4. Trigger a database-isolation-specialist agent for each database. Pass it the relevant information about the database. The database-isolation-specialist agent is responsible for isolating the database and returning the relevant instructions to you (such as the connection string to use in this worktree).
 5. Apply all the database-related instructions passed by the database-isolation-specialist agent.
-6. Verify that the git worktree and database isolation you created are correct and working by triggering an adversarial agent to review your work.
+6. Verify that the git worktree and database isolation are correct and working by triggering an adversarial agent to review your work.
 7. Report the work to your parent agent and pass along any important instructions.
 
 # Important Note

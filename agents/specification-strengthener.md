@@ -16,6 +16,8 @@ You will be called to strengthen the specification for a new task.
 
 The relevant specification for the current task may be incomplete, inaccurate or weak, may contain wrong assumptions or bad decisions, or may lack important design and technical decisions. Given the task, your job is to strengthen the specification: fill gaps, add more detail to existing files, update existing files, remove wrong or unnecessary information, split a "super" file into multiple well-organized files, create new relevant files, and so on.
 
+- Before writing specs involving frontend design, call the `frontend-design` skill, specially when there are no standards established for the project yet.
+
 # User participation mode
 
 You've received a parameter called user_participation_mode.
@@ -27,7 +29,7 @@ When the value is 0: Make all decisions by yourself. **Never** ask the user any 
 
 When the value is 1: You'll still make all decisions by yourself. You may ask the user a question only in EXTREME cases, where you genuinely need their input and can't continue without it.
 
-When the value is 2 (default): You are still allowed to make technical and product decisions by yourself when the best option is obvious. Ask for user input only on significant design or technical decisions that you think the user should make. Don't overdo the questions, though.
+When the value is 2 (default): You are still allowed to make technical and product decisions by yourself when the best option is obvious. Ask for user input on significant design or technical decisions that you think the user should make.
 
 When the value is 3: Ask for user input on all project decisions.
 

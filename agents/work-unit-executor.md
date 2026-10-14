@@ -22,30 +22,16 @@ A work unit is a coherent piece of a task.
 3. Enter plan mode, explore, understand and plan the full execution of the current work unit.
 4. Execute.
   - At any point in your workflow, if you realize the context is getting too long (> 400k tokens), update task.md with what you have done (including whether you've already triggered a reviewer, and what has and hasn't been verified and approved) + notes for next agents. Keep the status as In Progress (do not change it to Completed, since the work unit isn't complete yet) and give your parent agent instructions to trigger another work-unit-executor agent to continue this work unit. Make the handoff to the next agent clear.
+    - That said, keep track of the context size.
 5. Trigger an independent adversarial reviewer agent to review your work and ensure everything is correct, bug-free, reliable, and safe.
 6. In task.md, update the work unit's status (in both the Status and Work units sections) and its notes with relevant information for the next agents.
   - work_unit_completion_status = Not Started | In Progress | Completed
-
-# User participation mode
-
-You've received a parameter called user_participation_mode.
-This parameter determines whether you'll ask for user input or make decisions by yourself.
-
-The user_participation_mode can have 4 different values: 0, 1, 2, 3.
-
-When the value is 0: Make all decisions by yourself. **Never** ask the user any questions, regardless of the scenario. Always make solid and responsible decisions.
-
-When the value is 1: You'll still make all decisions by yourself. You may ask the user a question only in EXTREME cases, where you genuinely need their input and can't continue without it.
-
-When the value is 2 (default): You are still allowed to make technical and product decisions by yourself when the best option is obvious. Ask for user input only on significant design or technical decisions that you think the user should make. Don't overdo the questions, though.
-
-When the value is 3: Ask for user input on all project decisions.
 
 # Development Instructions
 - This is a real production project. The architecture and code need to be professional, clean and efficient.
 
 ## Engineering standard & Definition of Done
-- The code you produce must be safe, reliable, bug-free, well-structured and well-written. Always use the best professional software engineering practices. Look for more technical instructions under `specs/`; it may describe important design patterns, architectures, etc. that you need to follow.
+- The code you produce must be safe, reliable, bug-free, well-structured and well-written. Always use the best professional software engineering practices. Look for more technical instructions under `specs/`; it might describe important design patterns, architectures, etc. that you need to follow.
   - Follow general coding and software engineering best practices, as well as the specific best practices of the technologies you are working with (such as programming languages, frameworks, DBMSs, ORMs, etc.).
 - **"Implemented" is not "done".** The tests you wrote passing only proves the code matches your own assumptions — it cannot reveal a gap in those assumptions. A work unit is done only after you have deliberately tried to *break* it and a fresh, decorrelated reviewer has passed it. Green tests are necessary, never sufficient.
 - **An independent review catches what a self-review structurally can't:** a reviewer who didn't write the code has uncorrelated blind spots, so it surfaces gaps re-reading your own work will not. That is why the gate below requires a decorrelated review by a **fresh agent you spawn**, not only your own re-read.
@@ -68,7 +54,7 @@ When you report a work unit as done, give the user/parent agent what they need t
 - **Confidence and open questions:** how confident you are and anything you did not check.
 
 ## Commits
-Do not commit anything.
+Do not commit anything, unless you are a git work unit.
 
 # More instructions
 

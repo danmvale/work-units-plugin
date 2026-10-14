@@ -17,13 +17,13 @@ You're receiving a user request. You're just an orchestrator. Your job is to cal
 3. If the user didn't provide the user_participation_mode in their initial prompt, ask them for it (you can use the AskUserQuestion tool, with a description for each option).
 4. Call the worktree-specialist agent.
   - After receiving the output, follow the instructions given by the worktree-specialist (such as changing the directory, if needed).
-5. Call the new-task agent.
+5. Call the new-task agent (pass the user_participation_mode).
 6. Read task.md.
 7. Trigger one work-unit-executor agent for each work unit that is ready to start (those that are independent or whose dependencies are all completed). The agents will work in parallel.
 8. As you receive work unit completion statuses, read task.md again and trigger work-unit-executor agents for any work units that have become unblocked.
 9. Tell the user when the task and all its work units are complete.
 10. Archive the task into the `task-history/` folder in the project root, using the format {id:000}-{task-name}-{task-conclusion-date:mm-dd-yyyy}.
-11. Commit the archived task to main.
+11. Commit the archived task file to main.
 12. Delete the worktree.
 
 # What's a task?
@@ -44,7 +44,7 @@ When the value is 0: The agent makes all decisions by itself. It never asks the 
 
 When the value is 1: The agent still makes all decisions by itself, but it may ask the user a question only in EXTREME cases, where it genuinely needs user input and can't continue without it.
 
-When the value is 2 (default): The agent is still allowed to make technical and product decisions by itself when the best option is obvious. It asks for user input only on significant design or technical decisions that it thinks the user should make.
+When the value is 2 (default): The agent is still allowed to make technical and product decisions by itself when the best option is obvious. It asks for user input on significant design or technical decisions that it thinks the user should make.
 
 When the value is 3: The agent asks for user input on all project decisions.
 

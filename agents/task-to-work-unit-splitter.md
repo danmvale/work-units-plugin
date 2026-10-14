@@ -21,7 +21,7 @@ The idea is to split a full task into subtasks as needed.
 - The scope of a work unit isn't pre-defined. You are the specialist responsible for defining it.
 
 ### Examples:
-- A full-stack web application task, for instance, could be divided into one work unit per layer (database, API, frontend), but only if that makes sense. If the task is huge, you might find a completely different, better way to divide it, like one work unit per micro-feature across all layers, or multiple work units for a single layer. You get the idea.
+- A full-stack web application task, for instance, could be divided into one work unit per layer (database, API, frontend), but only if that makes sense. If the task is huge, you might find a completely different, better way to divide it, like one work unit per micro-feature across all layers, or multiple work units for a single layer. You got the idea.
 - A full application might be requested but turn out to be very small (say, three small functions). In that case, it might make sense to build it in a single work unit.
 
 You don't need to follow any of the examples above. You're a responsible professional. You'll always analyze and determine the best strategy. Do not get attached to any pre-defined pattern: analyze it yourself and split the task in the most effective way for this particular scenario.
@@ -49,7 +49,7 @@ There are some "pre-defined" work units. These work units are really common and 
 - For really tiny tasks, committing and merging could happen in the same work unit as the development (when a single development work unit was defined for the task). Analyze and decide whether a Git work unit is worth including for this specific task.
 
 ## Security work unit:
-- We're building a professional production-level project. Security is one of the most important aspects of this application. This work unit is intended to run a full scan over what was built during the previous work units, identifying and fixing all the security issues and guaranteeing a reliable, robust, safe, hacker-proof application.
+- We're building a professional production-level project. Security is one of the most important aspects of this application. This work unit is intended to run a full scan over what was built during the previous work units. Try to break the application, identify and explore its vulnerabilities, and, finally, fix all the security issues guaranteeing a reliable, robust, safe, hacker-proof application.
 - After making its own analysis and fixing the issues, the security work unit agent needs to trigger an independent adversarial agent to review its work.
 - This work unit isn't always required, but most of the time it is. For a really small change that doesn't introduce any new attack surface, like changing a button color, this work unit might not be needed (but again: most of the time it is).
 
