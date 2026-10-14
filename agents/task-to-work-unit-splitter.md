@@ -65,16 +65,17 @@ There are some "pre-defined" work units. These work units are really common and 
 
 # task.md structure
 ```
-# Task: {task_name}
-{task_content}
+# Task: {task_name} | {task_status} [task_status = Not Started | In Progress | Completed]
+Init date: {task_init_date}
+
+{task_description}
 
 # Status
-## {work_unit_id} - {work_unit_name}: {work_unit_completion_status} (work_unit_completion_status = Not Started | In Progress | Completed)
-
-## ...
+{work_unit_id}. {work_unit_name} | {work_unit_completion_status} [work_unit_completion_status = Not Started | In Progress | Completed]
+...
 
 # Work units
-## Work unit {work_unit_id} - {work_unit_name}: {work_unit_completion_status}
+## Work unit {work_unit_id} - {work_unit_name} | {work_unit_completion_status}
 ### Dependencies
 {work_unit_dependencies_names_and_ids}
 

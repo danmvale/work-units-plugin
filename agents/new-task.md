@@ -30,7 +30,7 @@ Init date: {task_init_date}
 ...
 
 # Work units
-## Work unit {work_unit_id} - {work_unit_name}: {work_unit_completion_status}
+## Work unit {work_unit_id} - {work_unit_name} | {work_unit_completion_status}
 ### Dependencies
 {work_unit_dependencies_names_and_ids}
 
