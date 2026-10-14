@@ -1,6 +1,6 @@
 # work-units
 
-A plugin that takes a request, from a one-line bug fix to a whole application, and handles it end to end. It strengthens the specification, splits the task into **work units** with explicit dependencies, runs independent units in parallel subagents, has each one adversarially reviewed, then commits and merges the result.
+A Claude Code plugin that takes a request, from a one-line bug fix to a whole application, and handles it end to end. It strengthens the specification, splits the task into **work units** with explicit dependencies, runs independent units in parallel subagents, has each one adversarially reviewed, then commits and merges the result.
 
 You talk to one orchestrator. It delegates everything else.
 
@@ -37,14 +37,6 @@ You talk to one orchestrator. It delegates everything else.
 | `specification-strengthener` | Brings `specs/` up to the level the task needs. |
 | `task-to-work-unit-splitter` | Splits the task into work units sized for a single session and classifies their dependencies. |
 | `work-unit-executor` | Plans, implements and tests one unit, then has a fresh subagent try to break it before marking the unit complete. |
-
-### Standard work units
-
-The splitter decides the units for each task, but three come up often:
-
-- **Git:** commit and merge the worktree into `main`. Very small tasks may fold this into the development unit.
-- **Security:** review everything built so far, fix the issues found, and get an independent adversarial review. Skipped only for changes that add no attack surface.
-- **End-to-end verification:** check that the finished behavior matches the task, and fix whatever doesn't.
 
 ## Requirements
 
@@ -126,18 +118,18 @@ All progress lives in `task.md`. If a session is interrupted, run `/work-units:t
 `task.md` looks like this:
 
 ```markdown
-# Task: Add CSV export
+# Task: Add CSV export | In Progress
 Init date: 2026-10-13
 
 <task description>
 
 # Status
-## 1 - Export endpoint: Completed
-## 2 - Export button: In Progress
-## 3 - Security review: Not Started
+## 1. Export endpoint | Completed
+## 2. Export button | In Progress
+## 3. Security review | Not Started
 
 # Work units
-## Work unit 1 - Export endpoint: Completed
+## Work unit 1 - Export endpoint | Completed
 ### Dependencies
 None
 
@@ -154,8 +146,7 @@ None
 ## Before you use it
 
 - **It's opinionated about layout.** It expects (and will create) `specs/` for the specification and `src/` for the code.
-- **It merges into `main`.** The Git work unit and the final archive step both commit to `main`. Try it on a branch or a throwaway repo first.
-- **It uses a lot of tokens.** Every work unit, worktree and new database isolation strategy gets its own review agent, and units run in parallel. A small request still goes through the full pipeline.
+- **It merges into `main`.** The Git work unit and the final archive step both commit to `main`.
 - **It holds everything to production standards.** Agents are told to treat the project as production code, so even small changes get security and verification passes unless the splitter decides they aren't needed.
 
 ## Project structure
