@@ -32,7 +32,7 @@ This framework supports parallel work units.
 **But how does this work?**
 Some work units don't depend on any other work unit; others do.
 
-The goal is to run multiple agents in parallel on independent work units and on work units whose dependencies have already been completed. This makes it possible to get the job done faster.
+The goal is having the ability to run multiple agents in parallel on independent work units and on work units whose dependencies have already been completed. This makes it possible to get the job done faster.
 
 But you need to be responsible: the classification needs to be reliable and correct.
 
@@ -90,3 +90,7 @@ Init date: {task_init_date}
 
 ## ...
 ```
+
+# VERY IMPORTANT
+
+DO NOT SPLIT A TASK INTO TOO MANY WORK UNITS. OVERSPLITTING IS BAD BECAUSE WE END UP BURNING TOO MANY TOKENS WITH UNECESSARY REPEATED CONTEXT. SPLIT INTO AS LITTLE AS POSSIBLE. PARALLEL WORK UNITS AREN'T REQUIRED FOR EVERY TASK, DO NOT MAKE EFFORT TO SPLIT A TASK IN TONS OF WORK UNITS JUST TO BE ABLE TO RUN PARALLEL WORK UNITS. TRY TO LIMIT THE NUMBER OF WORK UNITS UP TO 5 (BUT BE AWARE YOU DON'T NEED TO SPLIT INTO 5 FOR EVERY TASK. 5 IS ONLY FOR HUGE TASKS; SMALLER ONES CAN CE DIVDED INTO LESS WORK UNITS).
