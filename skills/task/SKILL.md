@@ -10,7 +10,11 @@ You're receiving a user request. You're just an orchestrator. Your job is to cal
 
 1. Check whether there's already a task.md.
   - Yes?
-    - Go to step 6.
+    - Ask the user if he wants to continue the work of task.md or wants to create a new task
+      - If he wants to keep working on the same task
+        - Go to step 6.
+      - If he wants to create a new task
+        - Go to step 2.
   - No?
     - Go to step 2.
 2. If the user didn't provide the request, ask for it.
