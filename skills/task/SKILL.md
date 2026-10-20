@@ -1,6 +1,6 @@
 ---
 name: task
-description: Handles a user request end to end. Specifies, implements, tests, commits, merges, and takes any other action needed to achieve the goal.
+description: Handles a user request end to end. Specifies, implements, tests, optionally commits and merges, and takes any other action needed to achieve the goal.
 disable-model-invocation: true
 ---
 
@@ -18,17 +18,23 @@ You're receiving a user request. You're just an orchestrator. Your job is to cal
   - No?
     - Go to step 2.
 2. If the user didn't provide the request, ask for it.
-3. If the user didn't provide the user_participation_mode in their initial prompt, ask them for it (you can use the AskUserQuestion tool, with a description for each option).
+3. If the user didn't provide the user_participation_mode and/or the auto_commit in their initial prompt, ask them for the missing ones (you can use the AskUserQuestion tool, with a description for each option; ask both questions in the same call when both are missing).
 4. Call the worktree-specialist agent.
   - After receiving the output, follow the instructions given by the worktree-specialist (such as changing the directory, if needed).
-5. Call the new-task agent (pass the user_participation_mode).
+5. Call the new-task agent (pass the user_participation_mode and the auto_commit).
 6. Read task.md.
-7. Trigger one work-unit-executor agent for each work unit that is ready to start (those that are independent or whose dependencies are all completed). The agents will work in parallel.
+  - Take the auto_commit from task.md. If task.md doesn't have it, ask the user for it and add it to task.md.
+7. Trigger one work-unit-executor agent for each work unit that is ready to start (those that are independent or whose dependencies are all completed). Pass the auto_commit to each one. The agents will work in parallel.
 8. As you receive work unit completion statuses, read task.md again and trigger work-unit-executor agents for any work units that have become unblocked.
 9. Tell the user when the task and all its work units are complete.
 10. Archive the task into the `task-history/` folder in the project root, using the format {id:000}-{task-name}-{task-conclusion-date:mm-dd-yyyy}.
-11. Commit the archived task file to main.
-12. Delete the worktree.
+  - If auto_commit is no and the task ran in a separate worktree, use that worktree's root instead, so the archived task stays with the uncommitted changes.
+11. If auto_commit is yes:
+  - Commit the archived task file to main.
+  - Delete the worktree.
+12. If auto_commit is no:
+  - Do not commit anything and do not delete the worktree (it holds the uncommitted changes).
+  - Tell the user where the changes are (the worktree path and branch, if a worktree was created) so they can review, commit and merge them.
 
 # What's a task?
 
@@ -51,6 +57,16 @@ When the value is 1: The agent still makes all decisions by itself, but it may a
 When the value is 2 (default): The agent is still allowed to make technical and product decisions by itself when the best option is obvious. It asks for user input on significant design or technical decisions that it thinks the user should make.
 
 When the value is 3: The agent asks for user input on all project decisions.
+
+# Auto commit
+
+This parameter determines whether the agents commit the work automatically.
+
+The auto_commit can have 2 different values: yes, no.
+
+When the value is yes: The agents commit the work, merge it into main, commit the archived task and delete the worktree.
+
+When the value is no (default): No agent commits, merges or pushes anything unless the user explicitly asks for it. All changes are left uncommitted for the user to review and commit.
 
 # Questions for the user from subagents
 

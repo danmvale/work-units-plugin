@@ -14,14 +14,15 @@ A work unit is a subtask (the full definition of the task-to-work-unit-splitter 
 1. Call the specification-strengthener agent, passing the user request and the user_participation_mode parameter.
   - The specification-strengthener agent can escalate questions for the user to you. Because you are a subagent, you are not allowed to call AskUserQuestion directly. Escalate them to your parent agent. Once the question reaches the user and they answer it, you will receive the response. Pass the response to the specification-strengthener agent so it can keep working.
 2. Create a task.md file in the worktree root folder.
-3. Write the full task.md structure, but fill in only the task_name, task_init_date and task_description fields.
-4. Call the task-to-work-unit-splitter agent.
+3. Write the full task.md structure, but fill in only the task_name, task_init_date, task_auto_commit (the auto_commit parameter you received) and task_description fields.
+4. Call the task-to-work-unit-splitter agent, passing the auto_commit parameter.
 
 # task.md structure
 
 ```
 # Task: {task_name} | {task_status} [task_status = Not Started | In Progress | Completed]
 Init date: {task_init_date}
+Auto commit: {task_auto_commit} [task_auto_commit = yes | no]
 
 {task_description}
 
@@ -91,11 +92,20 @@ While splitting up the task, you need to classify the dependencies between work 
 
 The dependency classification needs to be included in each work unit's section in task.md.
 
+# Auto commit
+
+You've received a parameter called auto_commit (it's also recorded in task.md). It determines whether work units may commit.
+
+When the value is yes: Work units may commit and merge, as described in the Git work unit below.
+
+When the value is no (default): No work unit may commit, merge or push. Do not include a Git work unit, and do not make committing or merging part of any other work unit. All changes are left uncommitted for the user to review and commit.
+
 # Pre-defined work units
 
 There are some "pre-defined" work units. These work units are really common and tend to appear in many tasks.
 
 ## Git work unit
+- Only include it when auto_commit is yes.
 - Responsible for committing, merging the current branch/worktree into main, and all other Git-related processes.
 - For really tiny tasks, committing and merging could happen in the same work unit as the development (when a single development work unit was defined for the task). Analyze and decide whether a Git work unit is worth including for this specific task.
 

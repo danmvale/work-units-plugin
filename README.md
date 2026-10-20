@@ -1,6 +1,6 @@
 # work-units
 
-A Claude Code plugin that takes a request, from a one-line bug fix to a whole application, and handles it end to end. It strengthens the specification, splits the task into **work units** with explicit dependencies, runs independent units in parallel subagents, has each one adversarially reviewed, then commits and merges the result.
+A Claude Code plugin that takes a request, from a one-line bug fix to a whole application, and handles it end to end. It strengthens the specification, splits the task into **work units** with explicit dependencies, runs independent units in parallel subagents, has each one adversarially reviewed, then, if you allow it, commits and merges the result.
 
 You talk to one orchestrator. It delegates everything else.
 
@@ -24,7 +24,7 @@ You talk to one orchestrator. It delegates everything else.
 2. **Specification.** The request is checked against `specs/`. Missing decisions, wrong assumptions and vague requirements are fixed before any code is written.
 3. **Planning.** `task.md` is written with a description of the task and a list of work units. Each unit lists the units it depends on.
 4. **Execution.** Every unit whose dependencies are complete gets its own `work-unit-executor`. When a unit finishes, the orchestrator re-reads `task.md` and starts whatever has become unblocked.
-5. **Wrap-up.** When every unit is complete, `task.md` is archived to `task-history/`, the archive is committed to `main`, and the worktree is removed.
+5. **Wrap-up.** When every unit is complete, `task.md` is archived to `task-history/`. With auto commit on, the archive is committed to `main` and the worktree is removed. With it off (the default), nothing is committed and the worktree is kept, so you can review, commit and merge the changes yourself.
 
 ### Agents
 
@@ -86,7 +86,7 @@ Run the skill in your project and describe what you want:
 /work-units:task Add CSV export to the reports page
 ```
 
-If your prompt doesn't include a participation mode, the orchestrator asks for one.
+If your prompt doesn't include a participation mode or an auto commit setting, the orchestrator asks for them.
 
 ### User participation mode
 
@@ -103,6 +103,21 @@ To set it up front, put it in the prompt:
 
 ```
 /work-units:task Add CSV export to the reports page. user_participation_mode: 0
+```
+
+### Auto commit
+
+This sets whether agents commit the work for you. It's recorded in `task.md`, so a resumed task keeps it.
+
+| Value | Behavior |
+| --- | --- |
+| `no` (default) | Nothing is committed, merged or pushed unless you explicitly ask. Changes are left uncommitted and the worktree, if one was created, is kept. |
+| `yes` | A Git work unit commits the work and merges it into `main`, the archived task is committed to `main`, and the worktree is removed. |
+
+To set it up front, put it in the prompt:
+
+```
+/work-units:task Add CSV export to the reports page. auto_commit: yes
 ```
 
 ### Resuming
@@ -124,6 +139,7 @@ All progress lives in `task.md`. If a session is interrupted, run `/work-units:t
 ```markdown
 # Task: Add CSV export | In Progress
 Init date: 2026-10-13
+Auto commit: no
 
 <task description>
 
@@ -150,7 +166,7 @@ None
 ## Before you use it
 
 - **It's opinionated about layout.** It expects (and will create) `specs/` for the specification and `src/` for the code.
-- **It merges into `main`.** The Git work unit and the final archive step both commit to `main`.
+- **It only commits when you let it.** With `auto_commit: yes`, the Git work unit and the final archive step both commit to `main`. With `no` (the default), all changes are left uncommitted.
 - **It holds everything to production standards.** Agents are told to treat the project as production code, so even small changes get security and verification passes unless the splitter decides they aren't needed.
 
 ## Project structure

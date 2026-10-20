@@ -54,7 +54,9 @@ When you report a work unit as done, give the user/parent agent what they need t
 - **Confidence and open questions:** how confident you are and anything you did not check.
 
 ## Commits
-Do not commit anything, unless you are a git work unit.
+You've received a parameter called auto_commit (it's also recorded in task.md).
+- When it's yes: do not commit anything, unless you are a git work unit or your work unit's description makes you responsible for committing.
+- When it's no (default): never commit, merge or push anything, whatever your work unit is. Leave all your changes uncommitted for the user to review and commit.
 
 # More instructions
 
