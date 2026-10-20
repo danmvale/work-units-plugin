@@ -74,6 +74,10 @@ claude plugin marketplace update work-units
 claude plugin update work-units@work-units
 ```
 
+Then restart Claude Code, or run `/reload-plugins` in a running session, to load the new version.
+
+To get new versions automatically, enable auto-update once from inside Claude Code: run `/plugin`, open the **Marketplaces** tab, select `work-units`, and choose **Enable auto-update**. Claude Code then checks for updates in the background and asks you to run `/reload-plugins` when one arrives.
+
 ## Usage
 
 Run the skill in your project and describe what you want:
