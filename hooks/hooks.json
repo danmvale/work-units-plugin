@@ -1,0 +1,29 @@
+{
+    "description": "Soft-stops a work-unit-executor once its context reaches 500k tokens and tells it to hand off its work unit to a fresh executor.",
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "*",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "set \"\\\" <#\" ; bash \"${CLAUDE_PLUGIN_ROOT}/hooks/context-limit.sh\"\n#>; & \"${CLAUDE_PLUGIN_ROOT}/hooks/context-limit.ps1\"",
+                        "timeout": 10
+                    }
+                ]
+            }
+        ],
+        "PostToolUseFailure": [
+            {
+                "matcher": "*",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "set \"\\\" <#\" ; bash \"${CLAUDE_PLUGIN_ROOT}/hooks/context-limit.sh\"\n#>; & \"${CLAUDE_PLUGIN_ROOT}/hooks/context-limit.ps1\"",
+                        "timeout": 10
+                    }
+                ]
+            }
+        ]
+    }
+}

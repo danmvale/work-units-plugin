@@ -27,6 +27,7 @@ You're receiving a user request. You're just an orchestrator. Your job is to cal
   - Take the auto_commit from task.md. If task.md doesn't have it, ask the user for it and add it to task.md.
 7. Trigger one work-unit-executor agent for each work unit that is ready to start (those that are independent or whose dependencies are all completed). Pass the auto_commit to each one. The agents will work in parallel.
 8. As you receive work unit completion statuses, read task.md again and trigger work-unit-executor agents for any work units that have become unblocked.
+  - If an executor hands its work unit off instead (it reached its context limit and left the unit In Progress), trigger a new work-unit-executor for that same work unit right away, pointing it to the handoff notes in task.md.
 9. Tell the user when the task and all its work units are complete.
 10. Archive the task into the `task-history/` folder in the project root, using the format {id:000}-{task-name}-{task-conclusion-date:mm-dd-yyyy}.
   - If auto_commit is no and the task ran in a separate worktree, use that worktree's root instead, so the archived task stays with the uncommitted changes.

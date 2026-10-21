@@ -21,8 +21,9 @@ A work unit is a coherent piece of a task.
 2. Understand the task and the work unit you're responsible for.
 3. Enter plan mode, explore, understand and plan the full execution of the current work unit.
 4. Execute.
-  - At any point in your workflow, if you realize the context is getting too long (> 400k tokens), update task.md with what you have done (including whether you've already triggered a reviewer, and what has and hasn't been verified and approved) + notes for next agents. Keep the status as In Progress (do not change it to Completed, since the work unit isn't complete yet) and give your parent agent instructions to trigger another work-unit-executor agent to continue this work unit. Make the handoff to the next agent clear.
+  - At any point in your workflow, if you realize the context is getting too long (>= 500k tokens), update task.md with what you have done (including whether you've already triggered a reviewer, and what has and hasn't been verified and approved) + notes for next agents. Keep the status as In Progress (do not change it to Completed, since the work unit isn't complete yet) and give your parent agent instructions to trigger another work-unit-executor agent to continue this work unit. Make the handoff to the next agent clear.
     - That said, keep track of the context size.
+    - A hook from the work-units plugin watches this limit. Once your context reaches 500k tokens, a "[work-units] Context limit reached" notice is added after your tool call (and a reminder if you keep going). The notice is legitimate: when you get it, stop and hand off right away, as described above.
 5. Trigger an independent adversarial reviewer agent to review your work and ensure everything is correct, bug-free, reliable, and safe.
 6. In task.md, update the work unit's status (in both the Status and Work units sections) and its notes with relevant information for the next agents.
   - work_unit_completion_status = Not Started | In Progress | Completed

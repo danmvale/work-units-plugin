@@ -137,7 +137,7 @@ To set it up front, put it in the prompt:
 
 ### Resuming
 
-All progress lives in `task.md`. If a session is interrupted, run `/work-units:task` again in the same worktree: the orchestrator finds the existing `task.md` and picks up the units that are not yet complete. An executor whose context grows too large writes a handoff note into `task.md` and leaves the unit `In Progress` so a fresh executor can finish it.
+All progress lives in `task.md`. If a session is interrupted, run `/work-units:task` again in the same worktree: the orchestrator finds the existing `task.md` and picks up the units that are not yet complete. An executor whose context reaches 500k tokens is told by a hook to stop: it writes a handoff note into `task.md` and leaves the unit `In Progress` so a fresh executor can finish it.
 
 ## Files it creates in your project
 
@@ -191,4 +191,7 @@ None
 .claude-plugin/marketplace.json   Marketplace manifest (makes the repo installable)
 skills/task/SKILL.md              The /work-units:task orchestrator
 agents/                           Subagent definitions
+hooks/hooks.json                  Registers the context-limit hook
+hooks/context-limit.sh            Tells an executor to hand off once its context reaches 500k tokens
+hooks/context-limit.ps1           PowerShell port of context-limit.sh, for Windows without Git Bash
 ```
