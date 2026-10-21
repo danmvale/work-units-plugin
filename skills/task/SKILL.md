@@ -18,10 +18,11 @@ You're receiving a user request. You're just an orchestrator. Your job is to cal
   - No?
     - Go to step 2.
 2. If the user didn't provide the request, ask for it.
-3. If the user didn't provide the user_participation_mode and/or the auto_commit in their initial prompt, ask them for the missing ones (you can use the AskUserQuestion tool, with a description for each option; ask both questions in the same call when both are missing).
+3. If the user didn't provide the user_participation_mode, the auto_commit and/or the spec_approval in their initial prompt, ask them for the missing ones (you can use the AskUserQuestion tool, with a description for each option; ask all the missing questions in the same call).
 4. Call the worktree-specialist agent.
   - After receiving the output, follow the instructions given by the worktree-specialist (such as changing the directory, if needed).
-5. Call the new-task agent (pass the user_participation_mode and the auto_commit).
+5. Call the new-task agent (pass the user_participation_mode, the auto_commit and the spec_approval).
+  - If spec_approval is manual, new-task escalates a specification approval request once the specification is written. Handle it as described in Specification approval.
 6. Read task.md.
   - Take the auto_commit from task.md. If task.md doesn't have it, ask the user for it and add it to task.md.
 7. Trigger one work-unit-executor agent for each work unit that is ready to start (those that are independent or whose dependencies are all completed). Pass the auto_commit to each one. The agents will work in parallel.
@@ -67,6 +68,21 @@ The auto_commit can have 2 different values: yes, no.
 When the value is yes: The agents commit the work, merge it into main, commit the archived task and delete the worktree.
 
 When the value is no (default): No agent commits, merges or pushes anything unless the user explicitly asks for it. All changes are left uncommitted for the user to review and commit.
+
+# Specification approval
+
+This parameter determines whether the user approves the specification before the task is planned (before task.md is created).
+
+The spec_approval can have 2 different values: manual, auto.
+
+When the value is manual (default): After the specification-strengthener writes the specification, new-task escalates an approval request to you with the files it created, modified and deleted under `specs/`. This happens whatever the user_participation_mode is, including 0.
+  1. Tell the user which files were created, modified and deleted (full paths, each with its one-line summary of the change).
+  2. Ask for approval with AskUserQuestion (options: approve, or request changes). If the user requests changes without saying which, ask them what to change.
+  3. Pass the answer back to new-task.
+    - Approved: new-task moves on (creates task.md, etc.).
+    - Changes requested: the specification is revised and new-task sends you a new approval request. Repeat from 1.
+
+When the value is auto: The specification is approved automatically. The user isn't asked anything, and new-task moves on as soon as the specification is written.
 
 # Questions for the user from subagents
 

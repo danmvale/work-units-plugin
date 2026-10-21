@@ -21,7 +21,7 @@ You talk to one orchestrator. It delegates everything else.
 ```
 
 1. **Worktree.** If a `task.md` already exists in the repo root, or other agents are working on the main worktree, a new git worktree is created so the task gets its own copy of the codebase, build and databases. Otherwise the task runs in the repo root.
-2. **Specification.** The request is checked against `specs/`. Missing decisions, wrong assumptions and vague requirements are fixed before any code is written.
+2. **Specification.** The request is checked against `specs/`. Missing decisions, wrong assumptions and vague requirements are fixed before any code is written. With manual specification approval (the default), you're shown the spec files that were created, modified or deleted, and planning starts only after you approve them.
 3. **Planning.** `task.md` is written with a description of the task and a list of work units. Each unit lists the units it depends on.
 4. **Execution.** Every unit whose dependencies are complete gets its own `work-unit-executor`. When a unit finishes, the orchestrator re-reads `task.md` and starts whatever has become unblocked.
 5. **Wrap-up.** When every unit is complete, `task.md` is archived to `task-history/`. With auto commit on, the archive is committed to `main` and the worktree is removed. With it off (the default), nothing is committed and the worktree is kept, so you can review, commit and merge the changes yourself.
@@ -86,7 +86,7 @@ Run the skill in your project and describe what you want:
 /work-units:task Add CSV export to the reports page
 ```
 
-If your prompt doesn't include a participation mode or an auto commit setting, the orchestrator asks for them.
+If your prompt doesn't include a participation mode, an auto commit setting or a specification approval setting, the orchestrator asks for them.
 
 ### User participation mode
 
@@ -118,6 +118,21 @@ To set it up front, put it in the prompt:
 
 ```
 /work-units:task Add CSV export to the reports page. auto_commit: yes
+```
+
+### Specification approval
+
+This sets whether you review the specification before the task is planned.
+
+| Value | Behavior |
+| --- | --- |
+| `manual` (default) | Once `specs/` is written, the orchestrator lists the files that were created, modified or deleted and asks you to approve them. If you request changes, the specification is revised and you're asked again. `task.md` is created only after you approve. This happens in every participation mode, including `0`. |
+| `auto` | The specification is approved automatically and planning starts right away. |
+
+To set it up front, put it in the prompt:
+
+```
+/work-units:task Add CSV export to the reports page. spec_approval: auto
 ```
 
 ### Resuming
