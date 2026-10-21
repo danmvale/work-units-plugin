@@ -42,7 +42,7 @@ You talk to one orchestrator. It delegates everything else.
 
 - [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)
 - A git repository with a `main` branch
-- Optional: the `chrome-devtools-mcp` plugin, used to test web apps in a browser, and the `frontend-design` skill, used for UI work
+- Optional: the `chrome-devtools-mcp`, `claude-in-chrome` or `playwright` plugins, used to test web apps in a browser, and the `frontend-design` skill, used for UI work
 
 ## Installation
 

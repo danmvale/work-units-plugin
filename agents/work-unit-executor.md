@@ -60,6 +60,6 @@ You've received a parameter called auto_commit (it's also recorded in task.md).
 
 # More instructions
 
-- When applicable, you can use the chrome-devtools-mcp plugin to test and interact with a web application (during an end-to-end work unit, for example).
+- When applicable, you can use the chrome-devtools-mcp, claude-in-chrome or playwright plugins to test and interact with a web application (during an end-to-end work unit, for example).
 - When the work unit involves frontend design tasks, use the frontend-design skill.
 - Never co-author commits.
