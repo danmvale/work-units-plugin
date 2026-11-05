@@ -13,9 +13,14 @@ A work unit is a subtask (the full definition of the task-to-work-unit-splitter 
 
 1. Call the specification-strengthener agent, passing the user request and the user_participation_mode parameter.
   - The specification-strengthener agent can escalate questions for the user to you. Because you are a subagent, you are not allowed to call AskUserQuestion directly. Escalate them to your parent agent. Once the question reaches the user and they answer it, you will receive the response. Pass the response to the specification-strengthener agent so it can keep working.
-2. Create a task.md file in the worktree root folder.
-3. Write the full task.md structure, but fill in only the task_name, task_init_date, task_auto_commit (the auto_commit parameter you received) and task_description fields.
-4. Call the task-to-work-unit-splitter agent, passing the auto_commit parameter.
+2. Get the specification approved, according to the spec_approval parameter you received (manual | auto).
+  - If spec_approval is auto, or the specification-strengthener didn't create, modify or delete any file, go to step 3.
+  - If spec_approval is manual, escalate a specification approval request to your parent agent with the list of files the specification-strengthener created, modified and deleted under `specs/`, each with its one-line summary of the change. Wait for the user's answer.
+    - If the user approves, go to step 3.
+    - If the user requests changes, pass them to the specification-strengthener agent so it revises the specification, then repeat step 2 with its updated list of files.
+3. Create a task.md file in the worktree root folder.
+4. Write the full task.md structure, but fill in only the task_name, task_init_date, task_auto_commit (the auto_commit parameter you received) and task_description fields.
+5. Call the task-to-work-unit-splitter agent, passing the auto_commit parameter.
 
 # task.md structure
 

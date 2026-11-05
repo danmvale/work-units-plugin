@@ -21,7 +21,7 @@ You talk to one orchestrator. It delegates everything else.
 ```
 
 1. **Worktree.** If a `task.md` already exists in the repo root, or other agents are working on the main worktree, a new git worktree is created so the task gets its own copy of the codebase, build and databases. Otherwise the task runs in the repo root.
-2. **Specification.** The request is checked against `specs/`. Missing decisions, wrong assumptions and vague requirements are fixed before any code is written.
+2. **Specification.** The request is checked against `specs/`. Missing decisions, wrong assumptions and vague requirements are fixed before any code is written. With manual specification approval (the default), you're shown the spec files that were created, modified or deleted, and planning starts only after you approve them.
 3. **Planning.** `task.md` is written with a description of the task and a list of work units. Each unit lists the units it depends on.
 4. **Execution.** Every unit whose dependencies are complete gets its own `work-unit-executor`. When a unit finishes, the orchestrator re-reads `task.md` and starts whatever has become unblocked.
 5. **Wrap-up.** When every unit is complete, `task.md` is archived to `task-history/`. With auto commit on, the archive is committed to `main` and the worktree is removed. With it off (the default), nothing is committed and the worktree is kept, so you can review, commit and merge the changes yourself.
@@ -42,7 +42,7 @@ You talk to one orchestrator. It delegates everything else.
 
 - [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)
 - A git repository with a `main` branch
-- Optional: the `chrome-devtools-mcp` plugin, used to test web apps in a browser, and the `frontend-design` skill, used for UI work
+- Optional: the `chrome-devtools-mcp`, `claude-in-chrome` or `playwright` plugins, used to test web apps in a browser, and the `frontend-design` skill, used for UI work
 
 ## Installation
 
@@ -86,7 +86,7 @@ Run the skill in your project and describe what you want:
 /work-units:task Add CSV export to the reports page
 ```
 
-If your prompt doesn't include a participation mode or an auto commit setting, the orchestrator asks for them.
+If your prompt doesn't include a participation mode, an auto commit setting or a specification approval setting, the orchestrator asks for them.
 
 ### User participation mode
 
@@ -120,9 +120,24 @@ To set it up front, put it in the prompt:
 /work-units:task Add CSV export to the reports page. auto_commit: yes
 ```
 
+### Specification approval
+
+This sets whether you review the specification before the task is planned.
+
+| Value | Behavior |
+| --- | --- |
+| `manual` (default) | Once `specs/` is written, the orchestrator lists the files that were created, modified or deleted and asks you to approve them. If you request changes, the specification is revised and you're asked again. `task.md` is created only after you approve. This happens in every participation mode, including `0`. |
+| `auto` | The specification is approved automatically and planning starts right away. |
+
+To set it up front, put it in the prompt:
+
+```
+/work-units:task Add CSV export to the reports page. spec_approval: auto
+```
+
 ### Resuming
 
-All progress lives in `task.md`. If a session is interrupted, run `/work-units:task` again in the same worktree: the orchestrator finds the existing `task.md` and picks up the units that are not yet complete. An executor whose context grows too large writes a handoff note into `task.md` and leaves the unit `In Progress` so a fresh executor can finish it.
+All progress lives in `task.md`. If a session is interrupted, run `/work-units:task` again in the same worktree: the orchestrator finds the existing `task.md` and picks up the units that are not yet complete. An executor whose context reaches 500k tokens is told by a hook to stop: it writes a handoff note into `task.md` and leaves the unit `In Progress` so a fresh executor can finish it.
 
 ## Files it creates in your project
 
@@ -176,4 +191,7 @@ None
 .claude-plugin/marketplace.json   Marketplace manifest (makes the repo installable)
 skills/task/SKILL.md              The /work-units:task orchestrator
 agents/                           Subagent definitions
+hooks/hooks.json                  Registers the context-limit hook
+hooks/context-limit.sh            Tells an executor to hand off once its context reaches 500k tokens
+hooks/context-limit.ps1           PowerShell port of context-limit.sh, for Windows without Git Bash
 ```

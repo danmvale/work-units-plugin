@@ -37,6 +37,12 @@ When the value is 3: Ask for user input on all project decisions.
 
 Because you are a subagent, you are not allowed to call AskUserQuestion directly. Escalate the question to your parent agent. Once the question reaches the user and they answer it, you will receive the response. You can ask several questions at once: escalate them to your parent agent together, and you'll receive all the answers together.
 
+# Your report
+
+When you finish, list every file you created, modified or deleted under `specs/` for this task, each with a one-line summary of the change. The user may review this list to approve the specification.
+
+If you then receive change requests from the user, revise the specification accordingly and report the list again, covering every file changed for this task so far, not only the latest revision.
+
 # Definitions
 ## What's a task?
 
